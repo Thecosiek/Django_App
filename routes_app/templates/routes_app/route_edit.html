@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+<div id="js-data"
+     data-form-prefix="{{ formset.prefix }}"
+     data-form-count="{{ formset.total_form_count }}">
+</div>
+
+{% block content %}
+<h1>{{ route.name }}</h1>
+
+<div id="map-container" style="position: relative; display: inline-block;">
+  <img id="bg-image" src="{{ route.background.image.url }}" alt="{{ route.background.title }}" />
+  <svg id="overlay" style="position: absolute; top: 0; left: 0; pointer-events: none;"></svg>
+</div>
+
+<form method="post" id="points-form">
+  {% csrf_token %}
+  {{ formset.management_form }}
+
+  <div id="formset-container">
+    {% for form in formset.forms %}
+      <div class="point-form" data-form-index="{{ forloop.counter0 }}">
+        <div style="display:none;">
+        {{ form.id }}       
+        </div>
+
+          <label for="{{ form.order.id_for_label }}">Kolejność:</label>
+          {{ form.order }}
+
+          <label for="{{ form.x.id_for_label }}">X:</label>
+          {{ form.x }}
+
+          <label for="{{ form.y.id_for_label }}">Y:</label>
+          {{ form.y }}
+
+        <div style="display:none;">
+        {{ form.DELETE }} 
+        </div>
+        <button type="button" class="btn-remove-point">Usuń ten punkt</button>
+      </div>
+    {% endfor %}
+  </div>
+  <button type="button" id="btn-add-point">Dodaj punkt</button>
+  <button type="submit">Zapisz trasę</button>
+</form>
+
+<hr>
+
+<style>
+  .point-circle { cursor: pointer; }
+  .point-form { margin-bottom: 0.5em; padding: 0.5em; border: 1px solid #ccc; }
+  .btn-remove-point { color: red; margin-left: 1em; }
+</style>
+
+{% endblock %}

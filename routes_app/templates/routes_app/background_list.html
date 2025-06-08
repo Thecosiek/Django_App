@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Wybierz tło</h1>
+<ul>
+  {% for bg in backgrounds %}
+    <li>
+      <img src="{{ bg.image.url }}" alt="{{ bg.title }}" style="width:150px;height:auto;" />
+      <p>{{ bg.title }}</p>
+      <a href="{% url 'routes:route_create' %}?background={{ bg.id }}">Wybierz</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

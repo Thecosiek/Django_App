@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Plansze</h2>
+
+<a href="{% url 'routes:board_create' %}" class="btn btn-primary">➕ Nowa plansza</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Rozmiar</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody id="boards-tbody">
+    </tbody>
+</table>
+
+<script src="{% static 'js/dist/board_list.js' %}"></script> <!-- tu podłącz swój TS skompilowany do JS -->
+{% endblock %}

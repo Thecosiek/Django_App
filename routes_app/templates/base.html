@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Routes App</title>
+  {% load static %}
+</head>
+<body data-current-user="{{ user.username }}">
+  <nav>
+    <a href="{% url 'routes:background_list' %}">Tła</a> |
+    <a href="{% url 'routes:route_list' %}">Moje trasy</a> |
+    {% if user.is_authenticated %}
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit">Wyloguj</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Zaloguj</a>
+    {% endif %}
+  </nav>
+  <hr>  
+  {% block content %}{% endblock %}
+  <script src="{% static 'js/dist/main.js' %}" ></script>
+  <script type="module" src="{% static 'js/dist/notifications.js' %}" defer></script>
+
+</body>
+</html>

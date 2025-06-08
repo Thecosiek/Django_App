@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Rejestracja</h2>
+  {% if messages %}
+      <ul>
+          {% for message in messages %}
+              <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+
+  <form method="POST">
+      {% csrf_token %}
+      
+      <label for="username">Nazwa użytkownika:</label><br>
+      <input type="text" id="username" name="username" required><br><br>
+      
+      <label for="password">Hasło:</label><br>
+      <input type="password" id="password" name="password" required><br><br>
+      
+      <label for="confirm_password">Potwierdź hasło:</label><br>
+      <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+
+      <button type="submit">Zarejestruj się</button>
+  </form>
+
+  <br>
+  <a href="{% url 'login' %}">Powrót</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Moje trasy</h1>
+<ul>
+  {% for route in routes %}
+    <li>
+      <strong>{{ route.name }}</strong> (Tło: {{ route.background.title }})
+
+      <a href="{% url 'routes:route_edit' route.pk %}">Edytuj</a>
+
+      <form action="{% url 'routes:route_delete' route.pk %}"
+            method="post"
+            style="display:inline; margin-left:1em;">
+        {% csrf_token %}
+        <button type="submit">Usuń</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>Brak tras. <a href="{% url 'routes:route_create' %}">Dodaj nową</a></li>
+  {% endfor %}
+</ul>
+<a href="{% url 'routes:background_list' %}">Wybierz inne tło</a>
+<a href="{% url 'routes:board_list' %}">Wybierz planszę</a>
+{% endblock %}

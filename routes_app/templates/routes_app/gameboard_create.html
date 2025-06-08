@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+#color-picker {
+  margin: 20px 0;
+}
+.color-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#grid-container {
+  width: 400px;
+  height: 400px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  display: grid;
+  gap: 2px;
+}
+.grid-cell {
+  background: #f0f0f0;
+  border: 1px solid #aaa;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.dot {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+.color-btn.selected {
+  outline: 2px solid black;
+}
+</style>
+
+{% if gameboard %}
+<script>
+  window.INITIAL_BOARD = {
+    id: {{ gameboard.pk }},
+    name: "{{ gameboard.name|escapejs }}",
+    rows: {{ gameboard.rows }},
+    cols: {{ gameboard.cols }},
+    dots: [
+      {% for dot in gameboard.dots.all %}
+        { row: {{ dot.row }}, col: {{ dot.col }}, color: "{{ dot.color }}" }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  };
+</script>
+{% else %}
+<script>window.INITIAL_BOARD = null;</script>
+{% endif %}
+
+<h1>{% if gameboard %}Edytuj planszę{% else %}Nowa plansza{% endif %}</h1>
+
+<form id="board-form" method="post">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  {{ formset.management_form }}
+
+  <button type="button" id="generate-grid">Generuj siatkę</button>
+
+  <div id="grid-container"></div>
+
+  <div id="color-picker">
+    <button type="button" class="color-btn" data-color="#FF0000" style="background:#FF0000"></button>
+    <button type="button" class="color-btn" data-color="#00FF00" style="background:#00FF00"></button>
+    <button type="button" class="color-btn" data-color="#0000FF" style="background:#0000FF"></button>
+    <button type="button" class="color-btn" data-color="#FFFF00" style="background:#FFFF00"></button>
+    <button type="button" class="color-btn" data-color="#FF00FF" style="background:#FF00FF"></button>
+    <button type="button" class="color-btn" data-color="#00FFFF" style="background:#00FFFF"></button>
+  </div>
+
+  <button type="submit" id="save-board">Zapisz</button>
+</form>
+
+<script type="module" src="{% static 'js/dist/board.js' %}?v={{ timestamp }}"></script>
+
+{% endblock %}
